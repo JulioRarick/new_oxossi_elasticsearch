@@ -1,8 +1,3 @@
-"""
-Gerenciador do Elasticsearch
-Responsável pela conexão, indexação e operações com Elasticsearch
-"""
-
 import json
 import logging
 from typing import Dict, List, Any, Optional

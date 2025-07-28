@@ -53,7 +53,7 @@ class SearchRequest(BaseModel):
     page: int = Field(1, ge=1, description="Número da página")
     size: int = Field(20, ge=1, le=100, description="Itens por página")
     sort: str = Field("relevance", description="Campo de ordenação")
-    order: str = Field("desc", regex="^(asc|desc)$", description="Direção da ordenação")
+    order: str = Field("desc", pattern="^(asc|desc)$", description="Direção da ordenação")
     include_aggregations: bool = Field(False, description="Incluir agregações na resposta")
 
 class SearchResponse(BaseModel):
@@ -149,8 +149,8 @@ async def simple_search(
     q: str = Query(..., description="Texto de busca"),
     page: int = Query(1, ge=1, description="Número da página"),
     size: int = Query(20, ge=1, le=100, description="Itens por página"),
-    sort: str = Query("relevance", regex="^(relevance|date|title|author)$", description="Campo de ordenação"),
-    order: str = Query("desc", regex="^(asc|desc)$", description="Direção da ordenação")
+    sort: str = Query("relevance", pattern="^(relevance|date|title|author)$", description="Campo de ordenação"),
+    order: str = Query("desc", pattern="^(asc|desc)$", description="Direção da ordenação")
 ):
     """Busca simples por texto"""
     start_time = time.time()
@@ -205,7 +205,7 @@ async def advanced_search(request: SearchRequest):
 
 @app.get("/api/search/autocomplete", tags=["Search"])
 async def autocomplete(
-    field: str = Query(..., regex="^(autor|titulo|capitania|tipo)$", description="Campo para autocomplete"),
+    field: str = Query(..., pattern="^(autor|titulo|capitania|tipo)$", description="Campo para autocomplete"),
     q: str = Query(..., min_length=1, description="Texto para sugestões"),
     limit: int = Query(10, ge=1, le=50, description="Número máximo de sugestões")
 ):

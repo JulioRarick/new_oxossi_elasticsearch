@@ -22,7 +22,7 @@ class SearchService:
         self.es_manager = ElasticsearchManager()
         self.query_builder = QueryBuilder()
         self.formatter = ResponseFormatter()
-        self.index_name = "historical_documents"
+        self.index_name = self.es_manager.index_name
     
     async def simple_search(
         self, 

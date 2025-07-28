@@ -78,7 +78,7 @@ class DocumentProcessor:
     def _load_source_data(self):
         """Carrega os metadados do arquivo JSON de origem."""
         if not self.source_json_path.exists():
-            logger.error(f"Arquivo de metadados não encontrado: {self.source_json_path}")
+            logger.warning(f"Arquivo de metadados não encontrado: {self.source_json_path}")
             return
         
         try:
@@ -123,6 +123,55 @@ class DocumentProcessor:
         except Exception as e:
             logger.error(f"Erro durante o setup: {e}")
             return False
+
+    def process_single_pdf_file(self, pdf_path: Path) -> None:
+        """Processa um único arquivo PDF local sem download"""
+        pdf_filename = pdf_path.name
+        try:
+            if not self.pdf_processor.validate_pdf(str(pdf_path)):
+                self.stats['skipped'] += 1
+                self.stats['errors_detail'].append({pdf_filename: "PDF inválido ou corrompido"})
+                logger.warning(f"PDF inválido, pulando: {pdf_filename}")
+                return
+
+            # Extração de texto e metadados do PDF
+            text = self.pdf_processor.extract_text(str(pdf_path))
+            metadata = self.pdf_processor.extract_metadata(str(pdf_path))
+            
+            if not text or len(text) < 100:
+                self.stats['skipped'] += 1
+                self.stats['errors_detail'].append({pdf_filename: "Texto extraído é muito curto ou vazio"})
+                logger.warning(f"Texto extraído de {pdf_filename} é muito curto, pulando.")
+                return
+
+            # Extração de dados estruturados do texto
+            extracted_data = self.data_extractor.extract_all(text)
+
+            # Montagem do documento para indexação (sem dados do JSON)
+            document = {
+                "id_original": pdf_filename.replace('.pdf', ''),
+                "nome_arquivo": pdf_filename,
+                "titulo": metadata.get('title', 'N/A') or pdf_filename.replace('.pdf', ''),
+                "autor": metadata.get('author', 'N/A') or 'Desconhecido',
+                "ano_publicacao": None,
+                "url_origem": None,
+                "link_pdf": f"/pdfs/{pdf_filename}",
+                "texto_completo": text,
+                "dados_extraidos": extracted_data,
+                "metadados_pdf": metadata,
+                "data_processamento": datetime.utcnow().isoformat()
+            }
+
+            # Indexar o documento
+            doc_id = pdf_filename.replace('.pdf', '').replace(' ', '_')
+            self.es_manager.index_document(document, doc_id=doc_id)
+            self.stats['processed'] += 1
+            logger.info(f"Documento processado com sucesso: {pdf_filename}")
+            
+        except Exception as e:
+            self.stats['errors'] += 1
+            self.stats['errors_detail'].append({pdf_filename: str(e)})
+            logger.error(f"Erro ao processar {pdf_filename}: {e}", exc_info=True)
 
     async def _process_single_pdf(self, pdf_path: Path, source_item: Dict[str, Any]) -> None:
         """Processa um único arquivo PDF e o indexa no Elasticsearch."""
@@ -173,12 +222,37 @@ class DocumentProcessor:
             self.stats['errors_detail'].append({pdf_filename: str(e)})
             logger.error(f"Erro ao processar {pdf_filename}: {e}", exc_info=True)
 
+    def process_local_pdfs(self, batch_size: int = 10) -> None:
+        """Processa todos os PDFs locais na pasta sem usar JSON"""
+        self.stats['start_time'] = time.time()
+        
+        # Encontrar todos os PDFs na pasta
+        pdf_files = list(self.pdf_dir.glob("*.pdf"))
+        
+        if not pdf_files:
+            logger.warning(f"Nenhum arquivo PDF encontrado em {self.pdf_dir}")
+            return
+
+        self.stats['total_files'] = len(pdf_files)
+        logger.info(f"Encontrados {len(pdf_files)} arquivos PDF para processar")
+        
+        # Processar em lotes para feedback
+        for i in range(0, len(pdf_files), batch_size):
+            batch_files = pdf_files[i:i+batch_size]
+            
+            for pdf_path in tqdm(batch_files, desc=f"Processando lote {i//batch_size + 1}"):
+                self.process_single_pdf_file(pdf_path)
+
+        self.stats['end_time'] = time.time()
+        self.print_stats()
+
     async def run_processing(self, batch_size: int = 10, max_workers: int = 4) -> None:
         """Executa o processamento em lote dos PDFs a partir da fonte JSON."""
         self.stats['start_time'] = time.time()
         
         if not self.source_data:
-            logger.warning("Nenhum dado de origem encontrado no arquivo JSON. O processamento não pode continuar.")
+            logger.warning("Nenhum dado de origem encontrado no arquivo JSON. Tentando processar PDFs locais.")
+            self.process_local_pdfs(batch_size)
             return
 
         self.stats['total_files'] = len(self.source_data)
@@ -226,24 +300,43 @@ class DocumentProcessor:
         duration = self.stats['end_time'] - self.stats['start_time']
         logger.info("\n--- Estatísticas de Processamento ---")
         logger.info(f"Tempo total: {duration:.2f} segundos")
-        logger.info(f"Total de registros na fonte: {self.stats['total_files']}")
+        logger.info(f"Total de arquivos: {self.stats['total_files']}")
         logger.info(f"Processados com sucesso: {self.stats['processed']}")
         logger.info(f"Com erros: {self.stats['errors']}")
         logger.info(f"Ignorados (inválidos/sem texto): {self.stats['skipped']}")
         if self.stats['errors'] > 0:
             logger.warning("Detalhes dos erros:")
-            for error in self.stats['errors_detail']:
+            for error in self.stats['errors_detail'][:10]:  # Limitar a 10 erros
                 logger.warning(f" - {error}")
         logger.info("--- Fim das Estatísticas ---\n")
 
 
-async def main(recreate_index: bool):
+async def main():
+    """Função principal"""
+    import argparse
+    
+    parser = argparse.ArgumentParser(description='Processador de Documentos Históricos')
+    parser.add_argument('--recreate-index', action='store_true', 
+                       help='Recriar o índice Elasticsearch')
+    parser.add_argument('--local-only', action='store_true',
+                       help='Processar apenas PDFs locais (sem JSON)')
+    parser.add_argument('--batch-size', type=int, default=10,
+                       help='Tamanho do lote para processamento')
+    parser.add_argument('--max-workers', type=int, default=4,
+                       help='Número máximo de workers concorrentes')
+    
+    args = parser.parse_args()
+    
     processor = DocumentProcessor()
-    if processor.setup(force_recreate_index=recreate_index):
-        await processor.run_processing(batch_size=10, max_workers=4)
+    
+    if processor.setup(force_recreate_index=args.recreate_index):
+        if args.local_only:
+            processor.process_local_pdfs(batch_size=args.batch_size)
+        else:
+            await processor.run_processing(
+                batch_size=args.batch_size, 
+                max_workers=args.max_workers
+            )
 
 if __name__ == "__main__":
-    # Exemplo de como rodar o script
-    # python src/main_processor.py --recreate-index
-    should_recreate = "--recreate-index" in sys.argv
-    asyncio.run(main(recreate_index=should_recreate))
+    asyncio.run(main())

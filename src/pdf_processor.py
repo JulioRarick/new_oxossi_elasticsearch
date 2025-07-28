@@ -34,6 +34,10 @@ class PDFProcessor:
                 logger.warning(f"Arquivo muito grande ({file_size} bytes): {pdf_path}")
                 return False
             
+            if file_size == 0:
+                logger.error(f"Arquivo vazio: {pdf_path}")
+                return False
+            
             # Verificar se é um PDF válido
             with open(pdf_path, 'rb') as file:
                 try:
@@ -143,11 +147,24 @@ class PDFProcessor:
                 if empty_line_count <= 2:  # Máximo 2 linhas vazias consecutivas
                     cleaned_lines.append('')
         
-        # Remover espaços múltiplos
+        # Juntar linhas e normalizar espaços
         text = '\n'.join(cleaned_lines)
-        text = ' '.join(text.split())
+        
+        # Normalizar espaços múltiplos mas preservar quebras de linha
+        lines = text.split('\n')
+        normalized_lines = []
+        for line in lines:
+            # Normalizar apenas espaços dentro da linha
+            normalized_line = ' '.join(line.split())
+            normalized_lines.append(normalized_line)
+        
+        text = '\n'.join(normalized_lines)
         
         return text
+    
+    def extract_metadata(self, pdf_path: str) -> Dict[str, Any]:
+        """Extrai metadados do PDF - nome atualizado"""
+        return self.get_metadata(pdf_path)
     
     def get_metadata(self, pdf_path: str) -> Dict[str, Any]:
         """Extrai metadados do PDF"""
@@ -176,10 +193,10 @@ class PDFProcessor:
                 # Informações do documento
                 if pdf_reader.metadata:
                     pdf_metadata = pdf_reader.metadata
-                    metadata['title'] = str(pdf_metadata.get('/Title', ''))
-                    metadata['author'] = str(pdf_metadata.get('/Author', ''))
-                    metadata['subject'] = str(pdf_metadata.get('/Subject', ''))
-                    metadata['creator'] = str(pdf_metadata.get('/Creator', ''))
+                    metadata['title'] = str(pdf_metadata.get('/Title', '')) if pdf_metadata.get('/Title') else ''
+                    metadata['author'] = str(pdf_metadata.get('/Author', '')) if pdf_metadata.get('/Author') else ''
+                    metadata['subject'] = str(pdf_metadata.get('/Subject', '')) if pdf_metadata.get('/Subject') else ''
+                    metadata['creator'] = str(pdf_metadata.get('/Creator', '')) if pdf_metadata.get('/Creator') else ''
                     
                     # Datas (podem estar em formatos diferentes)
                     creation_date = pdf_metadata.get('/CreationDate')
