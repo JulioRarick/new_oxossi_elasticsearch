@@ -1,0 +1,150 @@
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.11.0
+    container_name: historical-docs-es
+    environment:
+      - node.name=es-node
+      - cluster.name=historical-docs-cluster
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms2g -Xmx2g
+      - xpack.security.enabled=false
+      - xpack.security.enrollment.enabled=false
+      - xpack.security.http.ssl.enabled=false
+      - xpack.security.transport.ssl.enabled=false
+    ports:
+      - "9200:9200"
+      - "9300:9300"
+    volumes:
+      - es_data:/usr/share/elasticsearch/data
+    networks:
+      - historical-docs-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:9200/_cluster/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 60s
+    restart: unless-stopped
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    container_name: historical-docs-api
+    ports:
+      - "8000:8000"
+    environment:
+      - ELASTICSEARCH_HOST=elasticsearch
+      - ELASTICSEARCH_PORT=9200
+      - ELASTICSEARCH_INDEX=historical_documents
+      - LOG_LEVEL=INFO
+      - ENVIRONMENT=production
+    volumes:
+      - ./src/pdfs:/app/pdfs:ro
+      - ./config:/app/config:ro
+      - ./logs:/app/logs
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - historical-docs-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8000/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  nginx:
+    image: nginx:alpine
+    container_name: historical-docs-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./src/pdfs:/usr/share/nginx/html/pdfs:ro
+      - ./static:/usr/share/nginx/html/static:ro
+    depends_on:
+      - api
+    networks:
+      - historical-docs-network
+    restart: unless-stopped
+
+  processor:
+    build:
+      context: .
+      dockerfile: Dockerfile.processor
+    container_name: historical-docs-processor
+    environment:
+      - ELASTICSEARCH_HOST=elasticsearch
+      - ELASTICSEARCH_PORT=9200
+      - ELASTICSEARCH_INDEX=historical_documents
+      - PDF_DIR=/app/pdfs
+      - CONFIG_DIR=/app/config
+      - LOG_LEVEL=INFO
+    volumes:
+      - ./src/pdfs:/app/pdfs:ro
+      - ./config:/app/config:ro
+      - ./logs:/app/logs
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - historical-docs-network
+    profiles:
+      - processing
+    command: python src/main_processor.py --batch-size 10 --max-workers 4
+
+  # Opcional: Kibana para visualização dos dados
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.11.0
+    container_name: historical-docs-kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - SERVER_NAME=kibana.local
+      - xpack.security.enabled=false
+      - xpack.encryptedSavedObjects.encryptionKey=something_at_least_32_characters
+    ports:
+      - "5601:5601"
+    depends_on:
+      elasticsearch:
+        condition: service_healthy
+    networks:
+      - historical-docs-network
+    profiles:
+      - kibana
+    restart: unless-stopped
+
+  # Opcional: Redis para cache (futuro)
+  redis:
+    image: redis:7-alpine
+    container_name: historical-docs-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - historical-docs-network
+    profiles:
+      - cache
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+
+volumes:
+  es_data:
+    driver: local
+  redis_data:
+    driver: local
+
+networks:
+  historical-docs-network:
+    driver: bridge
+
+# Configurações para diferentes ambientes
+# Para desenvolvimento: docker-compose up elasticsearch api
+# Para processamento: docker-compose --profile processing up
+# Com Kibana: docker-compose --profile kibana up
+# Produção completa: docker-compose --profile processing --profile kibana up

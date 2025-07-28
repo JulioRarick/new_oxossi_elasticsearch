@@ -1,0 +1,49 @@
+# Dockerfile para a API
+FROM python:3.11-slim-bullseye
+
+# Atualizar pacotes do sistema para reduzir vulnerabilidades
+RUN apt-get update && apt-get upgrade -y && apt-get clean
+
+# Definir diretório de trabalho
+WORKDIR /app
+
+# Instalar dependências do sistema
+RUN apt-get update && apt-get install -y \
+    curl \
+    gcc \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copiar requirements primeiro para aproveitar cache do Docker
+COPY requirements.txt .
+
+# Instalar dependências Python
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copiar código da aplicação
+COPY api/ ./api/
+COPY src/ ./src/
+COPY config/ ./config/
+
+# Criar diretórios necessários
+RUN mkdir -p logs pdfs
+
+# Definir variáveis de ambiente
+ENV PYTHONPATH=/app
+ENV ELASTICSEARCH_HOST=elasticsearch
+ENV ELASTICSEARCH_PORT=9200
+ENV ELASTICSEARCH_INDEX=historical_documents
+
+# Expor porta
+EXPOSE 8000
+
+# Script de inicialização
+COPY scripts/start-api.sh ./start-api.sh
+RUN chmod +x start-api.sh
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD curl -f http://localhost:8000/health || exit 1
+
+# Comando padrão
+CMD ["./start-api.sh"]

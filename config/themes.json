@@ -1,0 +1,30 @@
+{
+  "Relacionamentos": [
+    "relacionamentos", "compadrio", "compaixão", "família", "escravidão",
+    "relações sociais", "estudos", "redes sociais", "casamento", "filhos",
+    "parentes", "amizade"
+  ],
+  "Política": [
+    "política", "poder", "força", "hierarquia", "governo", "câmara", "rei",
+    "coroa", "donatário", "capitão-mor", "juiz", "vereador", "lei", "ordem",
+    "conflito", "guerra", "revolta", "administração"
+  ],
+  "Economia": [
+    "economia", "comércio", "produção", "consumo", "gado", "tropeiros",
+    "negociantes", "engenho", "açúcar", "lavoura", "roça", "mineração",
+    "ouro", "prata", "escravos", "mercado", "preço", "dívida", "terra",
+    "sesmaria", "fazenda"
+  ],
+  "Cultura": [
+    "cultura", "sensibilidades", "narrativas", "religião", "igreja", "padre",
+    "fé", "costumes", "festa", "música", "arte", "educação", "língua"
+  ],
+  "Geografia/Espaço": [
+     "vila", "cidade", "povoação", "sertão", "rio", "caminho", "fronteira",
+     "mar", "costa", "ilha", "monte", "serra", "mato", "campo"
+  ],
+  "Indígenas": [
+      "índio", "indígena", "gentio", "nativo", "tribo", "aldeia", "aldeamento",
+      "tupi", "guarani", "aimoré", "potiguar", "carijó", "mameluco"
+  ]
+}

@@ -1,0 +1,337 @@
+Alhandra,Paraíba
+Almeirim,Pará
+Porto Alegre,Rio Grande de São Pedro
+Angra dos Santos Reis da Ilha Grande,São Vicente
+Angra dos Santos Reis da Ilha Grande,Itanhaém
+Barra do Rio de Contas,Ilhéus
+Barra do Rio de Contas,Bahia
+Bom Sucesso do Porto Calvo,Pernambuco
+Vila de Bragança,Pará
+Camamú,Bahia
+Camamú,Ilhéus
+Chaves,Pará
+Cidade da Bahia,Bahia
+Cidade da Paraíba,Paraíba
+Cidade de Belém,Pará
+Cidade de Filipéia de Nossa Senhora das Neves,Paraíba
+Cidade de Oeiras,Piauí
+Cidade de São Paulo,São Paulo e Minas de Ouro
+Cidade de São Paulo,São Paulo
+Cidade de São Sebastião do Rio de Janeiro,Rio de Janeiro
+Cidade de São Sebastião do Rio de Janeiro,Rio de Janeiro
+Cidade do Natal,Rio Grande
+Cidade do Natal,Rio Grande
+São Miguel de Cintra,Pará
+Conde,Paraíba
+Faro,Pará
+Fortaleza de Nossa Senhora da Assunção,Ceará
+Frederikstadt,Holanda
+Goiana,Itamaracá
+Goiana,Pernambuco
+Igarassu,Pernambuco
+Nossa Senhora da Conceição - Itamaracá,Itamaracá
+Itapeva do Faxina,São Paulo
+Maraú,Bahia
+Mariana,Minas Gerais
+Melgaço,Pará
+Minas de Apiaí,São Paulo
+Monte Alegre,Pará
+Monte-Mor,Paraíba
+Monte-mor o Novo da América,Ceará
+Nieuw Amsterdam,Holanda
+Nossa Senhora da Ajuda de Jaguaripe,Bahia
+Nossa Senhora da Conceição de Itanhaém,Itanhaém
+Nossa Senhora da Conceição de Itanhaém,São Vicente
+Nossa Senhora da Graça do Rio de São Francisco,São Vicente
+Curitiba,São Vicente
+Nossa Senhora da Piedade de Magé,Rio de Janeiro
+Nossa Senhora da Purificação de Santo Amaro,Bahia
+Nossa Senhora das Neves de Iguape,São Vicente
+Nossa Senhora de Nazaré de Itapicuru de Cima,Bahia
+Nossa Senhora do Bom Sucesso do Pombal,Paraíba
+Nossa Senhora do Desterro - Santa Catarina,Rio de Janeiro
+Nossa Senhora do Livramento de Parnaguá,Piauí
+Nossa Senhora do Ribeirão do Carmo,São Paulo e Minas de Ouro
+Nossa Senhora do Ribeirão do Carmo,Minas Gerais
+Nossa Senhora do Rosário do Cairú,Ilhéus
+Nossa Senhora do Rosário do Cairú,Bahia
+Nossa Senhora do Rosário do Porto da Cachoeira,Bahia
+Nossa Senhora dos Prazeres de Lajes,São Paulo
+Óbidos,Pará
+Olinda,Pernambuco
+Olinda,Pernambuco
+Paranaguá,São Vicente
+Penedo do Rio São Francisco,Pernambuco
+Pilar de Taipú,Paraíba
+Portel,Pará
+Porto de Mós,Pará
+Porto Seguro,Porto Seguro
+Propriá,Sergipe
+Resende,Rio de Janeiro
+Rio Grande de São Pedro,Rio de Janeiro
+Rio Grande de São Pedro,Rio Grande de São Pedro
+Rio Grande de São Pedro,Rio Grande de São Pedro
+Rio Grande de São Pedro,Rio Grande de São Pedro
+Santa Helena,Rio de Janeiro
+Santa Maria Madalena da Alagoa do Sul,Pernambuco
+Santo Amaro das Brotas,Sergipe
+Santo Antônio de Alcântara,Maranhão
+Santo Antonio de Boipeba,Ilhéus
+Santo Antonio de Boipeba,Bahia
+Santo Antônio de Itabaiana,Sergipe
+Santo Antonio de Sá,Rio de Janeiro
+São Bartolomeu do Maragogipe,Bahia
+Russas,Ceará
+São Cristóvão,Sergipe
+São Francisco da Barra de Sergipe do Conde,Bahia
+São João Batista de Cananéia,São Vicente
+São João da Barra de Paraíba,Rio de Janeiro
+São João da Barra de Paraíba,Espírito Santo
+São João da Parnaíba,Piauí
+São João do Príncipe,Ceará
+São Luís,Maranhão
+São Luís,Maranhão
+São Matheus,Espírito Santo
+Vila de São Paulo,São Paulo e Minas de Ouro
+São Paulo de Piratininga,São Vicente
+São Pedro del Rei,Mato Grosso
+Soure,Pará
+Taquara,Paraíba
+Vila Bela da Santíssima Trindade,Mato Grosso
+Vila Boa,São Paulo
+Vila da Rainha,São Tomé
+Alcobaça,Bahia
+Alenquer,Pará
+Aquiraz,Ceará
+Aquiraz,Ceará
+Barbacena,Minas Gerais
+Barcelos,Rio Negro
+Barcelos,Rio Negro
+Barcelos,Rio Negro
+Barcelos,Rio Negro
+Belmonte,Bahia
+Vila de Borba a nova,Rio Negro
+Cachoeira da Abadia,Bahia
+Campanha da Princesa,Minas Gerais
+Campo Maior,Pernambuco
+Casal Vasco,Mato Grosso
+Caxias das Aldeias Altas,Maranhão
+Vila de Cunha,São Paulo
+Ega,Rio Negro
+Guarapari,Espírito Santo
+Guaratinguetá,Itanhaém
+Gurupá,Pará
+Icó,Ceará
+Inhambupe,Bahia
+Itu,São Vicente
+Jacareí,Itanhaém
+Jerumenha,Piauí
+Jundiaí,São Vicente
+Lorena,São Paulo
+Marvão,Piauí
+Mazagão,Cabo Norte
+Mocha,Piauí
+Mogi das Cruzes,São Vicente
+Mogi-Mirim,São Paulo
+Monção,Maranhão
+Moura,Rio Negro
+Nossa Senhora da Ponte de Sorocaba,Itanhaém
+Nossa Senhora do Bom Sucesso de Minas Novas do Araçuí,Bahia
+Nossa Senhora do Bom Sucesso de Minas Novas do Araçuí,Minas Gerais
+Nova Almeida,Espírito Santo
+Nova Bragança,São Paulo
+Olivença - Capitania da Bahia,Bahia
+Olivença - Rio Negro,Rio Negro
+Ourém,Pará
+Paço do Lumiar,Maranhão
+Paracatu do Príncipe,Minas Gerais
+Paraitinga,São Paulo
+Paraty,Itanhaém
+Paraty,São Paulo e Minas de Ouro
+Parnaíba,São Vicente
+Pastos Bons,Maranhão
+Piedade do Pitangui,São Paulo e Minas de Ouro
+Piedade do Pitangui,Minas Gerais
+Pindamonhangaba,São Vicente
+Portalegre,Rio Grande
+Porto Feliz,São Paulo
+Prado,Bahia
+Queluz,Minas Gerais
+Recife,Pernambuco
+Santa Cruz do Aracati,Ceará
+Santarém - Capitania da Bahia,Bahia
+Santarém - Capitania do Grão-Pará,Pará
+Santo Antônio de Jacobina,Bahia
+Santo Antônio do Rio das Caravelas,Bahia
+Santo Antônio dos Anjos da Laguna,Rio de Janeiro
+Santo Antônio dos Anjos da Laguna,São Paulo
+Santos,São Vicente
+São Bento do Tamanduá,Minas Gerais
+São Carlos,São Paulo
+São Francisco das Chagas da Barra do Rio Grande,Bahia
+São João Del-Rei,São Paulo e Minas de Ouro
+São João Del-Rei,Minas Gerais
+São João do Atibaia,São Paulo
+São Jorge,Ilhéus
+São José de Guimarães,Maranhão
+São José del-Rei,Minas Gerais
+São José de Porto Alegre,Bahia
+São José do Javari,Rio Negro
+São José do Paraíba,São Paulo
+São José do Rio Grande,Rio Grande
+São Mateus,Bahia
+São Pedro,Paraíba
+São Salvador dos Campos,Rio de Janeiro
+São Salvador dos Campos,Espírito Santo
+São Sebastião,São Vicente
+Serpa,Rio Negro
+Silves,Rio Negro
+Taubaté,Itanhaém
+Tomar,Rio Negro
+Trancoso,Bahia
+Ubatuba,Itanhaém
+Urubú,Bahia
+Valença - Capitania da Bahia,Bahia
+Valença - Capitania do Piauí,Piauí
+Viana,Maranhão
+Viçosa - Arraial de Campinho do Peruípe,Bahia
+Viçosa de Tutóia,Maranhão
+Vigia,Pará
+Vinhais,Maranhão
+Vitória,Espírito Santo
+Distinta e Real de Sobral,Ceará
+Espírito Santo de Nova Abrantes,Bahia
+Príncipe,São Paulo e Minas de Ouro
+Príncipe,Minas Gerais
+Flor,Rio Grande
+Formosa de Sirinhaém,Pernambuco
+Maria do Paraguai,Mato Grosso
+Nova da Cerveira,Maranhão
+Vila Nova da Princesa,Rio Grande
+Nova da Rainha - Capitania da Paraíba,Paraíba
+Nova da Rainha do Caeté,São Paulo e Minas de Ouro
+Nova da Rainha do Caeté,Minas Gerais
+Nova da Rainha - Tupinambarana,Rio Negro
+Nova de Arez,Rio Grande
+Nova de Benevente,Espírito Santo
+Vila Nova de Castro,São Paulo
+Nova de El Rei - Pará,Pará
+Nova de El Rei - Siará,Ceará
+Nova de Estremoz do Norte,Rio Grande
+Nova de Nossa Senhora do Livramento e Minas de Rio de Contas,Bahia
+Nova de Nossa Senhora do Livramento e Minas de Rio de Contas,Bahia
+Nova de Santo Antônio do Rio de São Francisco,Sergipe
+Nova de São José del Rei,Rio de Janeiro
+Vila Nova de Soure,Ceará
+Vila Nova de Sousa,Paraíba
+Vila Nova de Tomar,Sergipe
+Vila Nova do Campo Maior de Quixeramobim,Ceará
+Vila Nova do Conde,Bahia
+Vila Nova do Príncipe - Capitania de São Paulo,São Paulo
+Vila Nova do Príncipe - Capitania do Rio Grande,Rio Grande
+Vila Real da Granja,Ceará
+Vila Real de Arroches,Ceará
+Vila Real de Messejana,Ceará
+Vila Real de São João,Paraíba
+Vila Real do Crato,Ceará
+Vila Real do Sabará,São Paulo e Minas de Ouro
+Vila Real do Sabará,Minas Gerais
+Vila Real do Senhor Bom Jesus de Cuyabá,Mato Grosso
+Vila Real do Senhor Bom Jesus de Cuyabá,São Paulo
+Vila Rica,Minas Gerais
+Vila Rica de Albuquerque,São Paulo e Minas de Ouro
+São José de Macapá,Cabo Norte
+Vila Velha,Espírito Santo
+Vila Velha,Espírito Santo
+Vila Verde,Bahia
+Vila Viçosa da Santa Cruz do Camutá,Cametá
+Vila Viçosa Real da América,Ceará
+Vila Vistosa da Madre de Deus,Cabo Norte
+Nossa Senhora da Conceição - Itamaracá,Pernambuco
+São Bernardo do Governador,Ceará
+Guaratinguetá,São Paulo e Minas de Ouro
+Guaratinguetá,São Paulo
+São José do Poxim,Pernambuco
+Vila de Atalaia,Pernambuco
+Vila Nova de São João da Anadia,Pernambuco
+Vila de Soure - Capitania da Bahia,Bahia
+Vila Nova da Rainha - Capitania da Bahia,Bahia
+Pombal - Capitania da Bahia,Bahia
+Alter do Chão,Pará
+Beja,Pará
+Boim,Pará
+Colares,Pará
+Conde - Pará,Pará
+Franca - Pará,Pará
+Monfort,Pará
+Monsarás,Pará
+Oeiras - Pará,Pará
+Pinhel,Pará
+Pombal - Pará,Pará
+Salvaterra,Pará
+Souzel,Pará
+Veiros,Pará
+Antonina,São Paulo
+Guaratuba,São Paulo
+Itapetininga,São Paulo
+Vila da Princesa,São Paulo
+Sabaúna,São Paulo
+São Jacó - Capitania de Icatu,Capitania de Icatu
+São Jacó - Capitania de Itapicuru,Capitania de Itapicuru
+Nossa Senhora da Conceição de Itanhaém,São Paulo e Minas de Ouro
+Nossa Senhora da Conceição de Itanhaém,São Paulo
+São Vicente,São Vicente
+São Vicente,São Paulo e Minas de Ouro
+São Vicente,São Paulo
+Nossa Senhora da Graça do Rio de São Francisco,São Paulo e Minas de Ouro
+Nossa Senhora da Graça do Rio de São Francisco,São Paulo
+Nossa Senhora das Neves de Iguape,Itanhaém
+Nossa Senhora das Neves de Iguape,São Paulo e Minas de Ouro
+Parnaíba,São Paulo e Minas de Ouro
+Parnaíba,São Paulo
+Pindamonhangaba,São Paulo e Minas de Ouro
+Pindamonhangaba,São Paulo
+Nossa Senhora do Desterro - Santa Catarina,Santa Catarina
+Porto Seguro,Bahia
+Vila Boa,Goiás
+Itu,São Paulo e Minas de Ouro
+Itu,São Paulo
+Jacareí,São Paulo e Minas de Ouro
+Jacareí,São Paulo
+Jundiaí,São Paulo e Minas de Ouro
+Jundiaí,São Paulo
+Mogi das Cruzes,São Paulo e Minas de Ouro
+Mogi das Cruzes,São Paulo
+Nossa Senhora da Ponte de Sorocaba,São Paulo e Minas de Ouro
+Nossa Senhora da Ponte de Sorocaba,São Paulo
+Vila de Santos,São Paulo e Minas de Ouro
+Vila de Santos,São Paulo
+São Jorge,Bahia
+São Sebastião,São Paulo e Minas de Ouro
+São Sebastião,São Paulo
+Taubaté,São Paulo e Minas de Ouro
+Taubaté,São Paulo
+Ubatuba,São Paulo e Minas de Ouro
+Ubatuba,São Paulo
+Vila Viçosa da Santa Cruz do Camutá,Pará
+Angra dos Santos Reis da Ilha Grande,São Paulo e Minas de Ouro
+Angra dos Santos Reis da Ilha Grande,São Paulo
+Angra dos Santos Reis da Ilha Grande,Rio de Janeiro
+Nossa Senhora das Neves de Iguape,São Paulo
+São João Batista de Cananéia,Itanhaém
+São João Batista de Cananéia,São Paulo e Minas de Ouro
+São João Batista de Cananéia,São Paulo
+Santo Antônio de Caraguatatuba,Itanhaém
+Santo Antônio de Caraguatatuba,São Paulo
+Paraty,São Paulo
+Paraty,Rio de Janeiro
+Paranaguá,São Paulo e Minas de Ouro
+Paranaguá,São Paulo
+Nossa Senhora da Luz dos Pinhais de Curitiba,São Paulo e Minas de Ouro
+Nossa Senhora da Luz dos Pinhais de Curitiba,São Paulo
+Paranaguá,Paranaguá
+Lagarto,Sergipe
+São João da Água Fria,Bahia
+Nova Mirandela,Bahia
+Real Vila de Assunção,Pernambuco
+Cimbres,Pernambuco

@@ -1,0 +1,38 @@
+# Processamento de PDFs
+PyPDF2
+pdfplumber
+python-poppler
+
+# Elasticsearch
+elasticsearch
+elasticsearch-async
+
+# API
+fastapi
+uvicorn
+pydantic
+
+# Processamento de texto
+fuzzywuzzy
+python-Levenshtein
+unidecode
+
+# Utilitários
+python-dotenv
+tqdm
+asyncio-throttle
+
+# Logs e monitoramento
+structlog
+prometheus-client
+
+# HTTP client para testes
+httpx
+aiohttp
+
+# Testes
+pytest
+pytest-asyncio
+
+# Sistema
+psutil

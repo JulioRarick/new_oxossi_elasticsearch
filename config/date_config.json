@@ -1,0 +1,25 @@
+{
+  "century_map": {
+    "xvi": 1500,
+    "xvii": 1600,
+    "xviii": 1700,
+    "xix": 1800,
+    "quinhentos": 1500,
+    "seiscentos": 1600,
+    "setecentos": 1700,
+    "oitocentos": 1800
+  },
+  "part_map": {
+    "primeira metade": [0, 50],
+    "início": [0, 30],
+    "começo": [0, 30],
+    "segunda metade": [50, 100],
+    "final": [70, 100],
+    "fim": [70, 100],
+    "meados": [40, 60]
+  },
+  "regex_patterns": {
+    "year": "\\b(?P<year>1[5-8]\\d{2})\\b",
+    "textual_phrase": "\\b(?P<part>primeira\\s+metade|segunda\\s+metade|in[íi]cio[s]?|come[çc]o|finais|final|fim|meados)?(?:\\s+(?:de|do|da|dos|das)\\s+)?(?P<century>s[ée]culo\\s+(?:xvi|xvii|xviii|xix)|quinhentos|seiscentos|setecentos|oitocentos)\\b"
+  }
+}
