@@ -81,7 +81,7 @@ check_versions() {
     print_success "Docker $DOCKER_VERSION ✓"
     
     # Docker Compose version
-    COMPOSE_VERSION=$(docker-compose --version | cut -d' ' -f3 | tr -d ',')
+    COMPOSE_VERSION=$(docker compose --version | cut -d' ' -f3 | tr -d ',')
     print_success "Docker Compose $COMPOSE_VERSION ✓"
 }
 
@@ -160,8 +160,8 @@ install_python_deps() {
     pip install --upgrade pip
     
     # Instalar dependências
-    if [ -f "requirements.txt" ]; then
-        pip install -r requirements.txt
+    if [ -f "../requirements.txt" ]; then
+        pip install -r ../requirements.txt
         print_success "Dependências Python instaladas"
     else
         print_error "Arquivo requirements.txt não encontrado"

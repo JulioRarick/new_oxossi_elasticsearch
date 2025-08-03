@@ -6,7 +6,7 @@ Responsável pela extração de texto e metadados dos arquivos PDF
 import os
 import logging
 from pathlib import Path
-from typing import Dict, Any, Optional
+from typing import Dict, Any, Optional, List
 import PyPDF2
 import pdfplumber
 from io import BytesIO

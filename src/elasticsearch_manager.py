@@ -1,3 +1,9 @@
+"""
+Gerenciador do Elasticsearch
+Responsável pela conexão, indexação e operações com Elasticsearch
+"""
+
+import os
 import json
 import logging
 from typing import Dict, List, Any, Optional
@@ -8,21 +14,26 @@ from elasticsearch.exceptions import ConnectionError, RequestError, NotFoundErro
 logger = logging.getLogger(__name__)
 
 class ElasticsearchManager:
-    def __init__(self, host: str = "localhost", port: int = 9200, index_name: str = "oxossi_docs_index"):
-        self.host = host
-        self.port = port
-        self.index_name = index_name
+    def __init__(self, host: str = None, port: int = None, index_name: str = None):
+        # Usar variáveis de ambiente ou valores padrão
+        self.host = host or os.getenv("ELASTICSEARCH_HOST", "localhost")
+        self.port = port or int(os.getenv("ELASTICSEARCH_PORT", "9200"))
+        self.index_name = index_name or os.getenv("ELASTICSEARCH_INDEX", "oxossi_docs_index")
+        
         self.es = None
         self._connect()
     
     def _connect(self):
         """Estabelece conexão com Elasticsearch"""
         try:
+            # Configuração SIMPLIFICADA para Elasticsearch 8.x - SEM timeout
             self.es = Elasticsearch(
-                [{"host": self.host, "port": self.port}],
-                timeout=30,
+                hosts=[f"http://{self.host}:{self.port}"],
+                request_timeout=30,
                 max_retries=3,
-                retry_on_timeout=True
+                retry_on_timeout=True,
+                verify_certs=False,
+                ssl_show_warn=False
             )
             
             # Testar conexão
@@ -35,8 +46,38 @@ class ElasticsearchManager:
             logger.error(f"Erro ao conectar ao Elasticsearch: {e}")
             raise
     
+    def create_index_with_mapping(self, settings: Dict[str, Any], mappings: Dict[str, Any], force_recreate: bool = False) -> bool:
+        """Cria o índice com configurações e mapeamentos customizados"""
+        try:
+            # Verificar se índice já existe
+            if self.es.indices.exists(index=self.index_name):
+                if force_recreate:
+                    logger.info(f"Removendo índice existente: {self.index_name}")
+                    self.es.indices.delete(index=self.index_name)
+                else:
+                    logger.info(f"Índice {self.index_name} já existe")
+                    return False
+            
+            # Configuração completa do índice
+            index_config = {
+                "settings": settings,
+                "mappings": mappings
+            }
+            
+            # Criar índice
+            self.es.indices.create(index=self.index_name, body=index_config)
+            logger.info(f"Índice {self.index_name} criado com sucesso")
+            return True
+            
+        except RequestError as e:
+            logger.error(f"Erro ao criar índice: {e}")
+            return False
+        except Exception as e:
+            logger.error(f"Erro inesperado ao criar índice: {e}")
+            return False
+    
     def create_index(self, force_recreate: bool = False) -> bool:
-        """Cria o índice com configurações otimizadas"""
+        """Cria o índice com configurações otimizadas padrão"""
         try:
             # Verificar se índice já existe
             if self.es.indices.exists(index=self.index_name):
@@ -63,11 +104,6 @@ class ElasticsearchManager:
                                     "portuguese_stop",
                                     "portuguese_stemmer"
                                 ]
-                            },
-                            "autocomplete_analyzer": {
-                                "type": "custom",
-                                "tokenizer": "keyword",
-                                "filter": ["lowercase", "asciifolding"]
                             }
                         },
                         "filter": {
@@ -86,133 +122,61 @@ class ElasticsearchManager:
                     "properties": {
                         "id": {"type": "keyword"},
                         "filename": {"type": "keyword"},
+                        "nome_arquivo": {"type": "keyword"},
+                        "id_original": {"type": "keyword"},
                         "titulo": {
                             "type": "text",
                             "analyzer": "portuguese_analyzer",
-                            "fields": {
-                                "keyword": {"type": "keyword"},
-                                "autocomplete": {
-                                    "type": "text",
-                                    "analyzer": "autocomplete_analyzer"
-                                }
-                            }
+                            "fields": {"keyword": {"type": "keyword"}}
                         },
                         "autor": {
                             "type": "text",
                             "analyzer": "portuguese_analyzer",
-                            "fields": {
-                                "keyword": {"type": "keyword"},
-                                "autocomplete": {
-                                    "type": "text",
-                                    "analyzer": "autocomplete_analyzer"
-                                }
-                            }
+                            "fields": {"keyword": {"type": "keyword"}}
                         },
                         "descricao": {
                             "type": "text",
                             "analyzer": "portuguese_analyzer"
                         },
-                        "capitania": {
-                            "type": "keyword",
-                            "fields": {
-                                "text": {
-                                    "type": "text",
-                                    "analyzer": "portuguese_analyzer"
-                                }
-                            }
-                        },
-                        "data": {
-                            "type": "date",
-                            "format": "yyyy||yyyy-MM||yyyy-MM-dd||strict_date_optional_time"
-                        },
+                        "capitania": {"type": "keyword"},
+                        "data": {"type": "date", "ignore_malformed": True},
                         "ano": {"type": "integer"},
-                        "tipo": {
-                            "type": "keyword",
-                            "fields": {
-                                "text": {
-                                    "type": "text",
-                                    "analyzer": "portuguese_analyzer"
-                                }
-                            }
-                        },
+                        "ano_publicacao": {"type": "integer"},
+                        "tipo": {"type": "keyword"},
                         "pdf_url": {"type": "keyword", "index": False},
+                        "url_origem": {"type": "keyword", "index": False},
+                        "link_pdf": {"type": "keyword", "index": False},
                         "full_text": {
                             "type": "text",
                             "analyzer": "portuguese_analyzer"
                         },
-                        "extracted_data": {
+                        "texto_completo": {
+                            "type": "text",
+                            "analyzer": "portuguese_analyzer"
+                        },
+                        "data_processamento": {"type": "date"},
+                        "dados_extraidos": {
                             "properties": {
-                                "dates": {
-                                    "type": "nested",
-                                    "properties": {
-                                        "type": {"type": "keyword"},
-                                        "year": {"type": "integer"},
-                                        "year_end": {"type": "integer"},
-                                        "century": {"type": "keyword"},
-                                        "period": {"type": "keyword"},
-                                        "original_text": {"type": "text"},
-                                        "position": {"type": "integer"},
-                                        "confidence": {"type": "float"},
-                                        "context": {"type": "text"}
-                                    }
-                                },
-                                "names": {
-                                    "type": "nested",
-                                    "properties": {
-                                        "first_name": {"type": "keyword"},
-                                        "last_name": {"type": "keyword"},
-                                        "full_name": {
-                                            "type": "text",
-                                            "analyzer": "portuguese_analyzer",
-                                            "fields": {"keyword": {"type": "keyword"}}
-                                        },
-                                        "position": {"type": "integer"},
-                                        "confidence": {"type": "float"},
-                                        "context": {"type": "text"}
-                                    }
-                                },
-                                "places": {
-                                    "type": "nested",
-                                    "properties": {
-                                        "location": {
-                                            "type": "keyword",
-                                            "fields": {
-                                                "text": {
-                                                    "type": "text",
-                                                    "analyzer": "portuguese_analyzer"
-                                                }
-                                            }
-                                        },
-                                        "capitania": {"type": "keyword"},
-                                        "position": {"type": "integer"},
-                                        "confidence": {"type": "float"},
-                                        "match_type": {"type": "keyword"},
-                                        "context": {"type": "text"}
-                                    }
-                                },
-                                "themes": {
-                                    "type": "nested",
-                                    "properties": {
-                                        "category": {"type": "keyword"},
-                                        "keywords_found": {"type": "keyword"},
-                                        "keyword_count": {"type": "integer"},
-                                        "total_occurrences": {"type": "integer"},
-                                        "relevance_score": {"type": "float"},
-                                        "context": {"type": "text"}
-                                    }
-                                }
+                                "dates": {"type": "nested"},
+                                "names": {"type": "nested"},
+                                "places": {"type": "nested"},
+                                "themes": {"type": "nested"}
                             }
                         },
                         "metadata": {
                             "properties": {
                                 "file_size": {"type": "long"},
                                 "page_count": {"type": "integer"},
-                                "processed_at": {"type": "date"},
-                                "processing_time_ms": {"type": "long"},
-                                "extraction_summary": {
-                                    "type": "object",
-                                    "enabled": False  # Não indexar, apenas armazenar
-                                }
+                                "processed_at": {"type": "date"}
+                            }
+                        },
+                        "metadados_pdf": {
+                            "properties": {
+                                "filename": {"type": "keyword"},
+                                "file_size": {"type": "long"},
+                                "page_count": {"type": "integer"},
+                                "title": {"type": "text"},
+                                "author": {"type": "text"}
                             }
                         }
                     }
@@ -372,20 +336,11 @@ class ElasticsearchManager:
             if field not in prepared or prepared[field] is None:
                 prepared[field] = default_value
         
-        # Converter data para formato ISO se necessário
-        if prepared.get('data') and isinstance(prepared['data'], str):
-            try:
-                # Se é só ano, converter para data ISO
-                if len(prepared['data']) == 4 and prepared['data'].isdigit():
-                    prepared['data'] = f"{prepared['data']}-01-01"
-            except:
-                pass
-        
         return prepared
     
     def _generate_document_id(self, document: Dict[str, Any]) -> str:
         """Gera ID único para o documento"""
-        filename = document.get('filename', 'unknown')
+        filename = document.get('filename', document.get('nome_arquivo', 'unknown'))
         # Remover extensão e caracteres especiais
         doc_id = filename.replace('.pdf', '').replace(' ', '_')
         

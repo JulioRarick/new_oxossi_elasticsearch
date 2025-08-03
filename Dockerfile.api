@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copiar requirements primeiro para aproveitar cache do Docker
-COPY requirements.txt .
+COPY ./requirements.txt .
 
 # Instalar dependências Python
 RUN pip install --no-cache-dir -r requirements.txt
@@ -37,13 +37,7 @@ ENV ELASTICSEARCH_INDEX=historical_documents
 # Expor porta
 EXPOSE 8000
 
-# Script de inicialização
-COPY scripts/start-api.sh ./start-api.sh
-RUN chmod +x start-api.sh
-
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
     CMD curl -f http://localhost:8000/health || exit 1
 
-# Comando padrão
-CMD ["./start-api.sh"]
